@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <!-- This launch keeps Astar_planning_S.launch as the baseline and only
+       switches complex_map to the rectangular-frame map. -->
+
+  <!-- Rectangular frame parameters for complex_map/rectFrameGenerate().
+       The frame is a wall near x = 0, with an opening in the y-z plane.
+       x_l/y_l/z_l are the lower corner of the generated wall block.
+       x_h/y_h/z_h are its size. x_m = 0 selects the y-z aperture branch.
+       y_m/z_m are the aperture center in the local y-z coordinates. -->
+  <arg name="frame_x_l" default="-0.2"/>
+  <arg name="frame_y_l" default="-3.5"/>
+  <arg name="frame_z_l" default="0.0"/>
+  <arg name="frame_x_h" default="0.4"/>
+  <arg name="frame_y_h" default="8.0"/>
+  <arg name="frame_z_h" default="2.8"/>
+  <arg name="frame_x_m" default="0.0"/>
+  <arg name="frame_y_m" default="3.5"/>
+  <arg name="frame_z_m" default="1.1"/>
+  <arg name="frame_len" default="2.6"/>
+  <arg name="frame_height" default="1.8"/>
+  <arg name="frame_theta" default="0.0"/>
+  <arg name="frame_gap_size" default="0.0"/>
+  <arg name="weight_clearance" default="2.0"/>
+  <arg name="weight_smooth" default="15.0"/>
+  <arg name="safety_clearance" default="0.6"/>
+  <arg name="max_angle_step" default="1"/>
+
+  <param name="/complex_map/x_l" value="$(arg frame_x_l)"/>
+  <param name="/complex_map/y_l" value="$(arg frame_y_l)"/>
+  <param name="/complex_map/z_l" value="$(arg frame_z_l)"/>
+  <param name="/complex_map/x_h" value="$(arg frame_x_h)"/>
+  <param name="/complex_map/y_h" value="$(arg frame_y_h)"/>
+  <param name="/complex_map/z_h" value="$(arg frame_z_h)"/>
+  <param name="/complex_map/x_m" value="$(arg frame_x_m)"/>
+  <param name="/complex_map/y_m" value="$(arg frame_y_m)"/>
+  <param name="/complex_map/z_m" value="$(arg frame_z_m)"/>
+  <param name="/complex_map/len" value="$(arg frame_len)"/>
+  <param name="/complex_map/height" value="$(arg frame_height)"/>
+  <param name="/complex_map/theta" value="$(arg frame_theta)"/>
+  <param name="/complex_map/gap_size" value="$(arg frame_gap_size)"/>
+
+  <include file="$(find gcopter)/launch/Astar_planning_S.launch">
+    <arg name="map_id" value="4"/>
+    <arg name="map_size_z" value="3.0"/>
+    <arg name="weight_clearance" value="$(arg weight_clearance)"/>
+    <arg name="weight_smooth" value="$(arg weight_smooth)"/>
+    <arg name="safety_clearance" value="$(arg safety_clearance)"/>
+    <arg name="max_angle_step" value="$(arg max_angle_step)"/>
+  </include>
+
+</launch>

@@ -1,0 +1,2 @@
+MARTS-Planner/Utils/odom_visualization:MARTS-Planner/Utils/pose_utils:MARTS-Planner/Utils/quadrotor_msgs:MARTS-Planner/Utils/rviz_plugins:MARTS-Planner/Utils/uav_utils:MARTS-Planner/path_searcher:MARTS-Planner/plan_env:MARTS-Planner/planner:MARTS-Planner/px4ctrl
+-DCMAKE_BUILD_TYPE=Release -DCATKIN_DEVEL_PREFIX=/home/han/transport-multiple/devel -DCMAKE_INSTALL_PREFIX=/home/han/transport-multiple/install -G Unix Makefiles

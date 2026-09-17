@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <!-- Staggered alternating tall-narrow and short-wide frame corridor.
+       This keeps Astar_planning_S.launch as the baseline and switches only
+       complex_map to map_id 11, implemented by map11Gene() in complex_map.cpp. -->
+
+  <arg name="weight_clearance" default="2.0"/>
+  <arg name="weight_smooth" default="3.0"/>
+  <arg name="safety_clearance" default="0.6"/>
+  <arg name="max_angle_step" default="1"/>
+  <arg name="check_transition" default="true"/>
+  <arg name="transition_position_step" default="0.1"/>
+  <arg name="transition_angle_step_deg" default="3.0"/>
+  <arg name="enable_load_corridor" default="true"/>
+  <arg name="enforce_system_clearance" default="true"/>
+  <!-- Extra uncertainty margin beyond payload/cable/drone physical radii. -->
+  <arg name="load_corridor_clearance" default="0.1"/>
+  <arg name="load_corridor_max_segment_length" default="2.4"/>
+  <arg name="load_corridor_min_segment_length" default="0.8"/>
+  <arg name="load_corridor_longitudinal_overlap" default="0.2"/>
+  <arg name="load_corridor_complexity_radius" default="1.2"/>
+  <arg name="load_corridor_clearance_weight" default="0.8"/>
+  <arg name="load_corridor_density_weight" default="3.0"/>
+  <arg name="load_corridor_min_extent" default="0.6"/>
+  <arg name="load_corridor_max_extent" default="2.0"/>
+  <arg name="load_corridor_extent_gain" default="1.5"/>
+  <arg name="load_corridor_payload_radius" default="0.05"/>
+  <arg name="load_corridor_cable_radius" default="0.02"/>
+  <arg name="load_corridor_drone_radius" default="0.125"/>
+  <arg name="load_corridor_bridge_safety_factor" default="0.6"/>
+  <arg name="load_corridor_min_overlap_radius" default="0.01"/>
+  <arg name="load_corridor_ellipsoid_transverse_scale" default="0.8"/>
+  <arg name="load_corridor_ellipsoid_max_longitudinal_radius" default="1.0"/>
+  <arg name="use_load_corridor_backend" default="true"/>
+  <arg name="corridor_parameterization_scale" default="0.95"/>
+  <arg name="corridor_temporal_groups" default="10"/>
+  <arg name="corridor_narrow_extent_threshold" default="0.7"/>
+  <arg name="corridor_narrow_margin_threshold" default="0.0"/>
+  <arg name="corridor_narrow_padding" default="0"/>
+  <arg name="corridor_terminal_guard_junctions" default="0"/>
+  <arg name="enable_corridor_path_smoothing" default="true"/>
+  <arg name="corridor_smoothing_iterations" default="8"/>
+  <arg name="corridor_smoothing_position_gain" default="0.45"/>
+  <arg name="corridor_smoothing_angle_gain" default="0.35"/>
+  <arg name="corridor_smoothing_max_deviation" default="0.6"/>
+  <arg name="corridor_smoothing_min_clearance" default="0.0"/>
+  <arg name="map_size_x" default="35.0"/>
+  <arg name="search_x_min" default="-17.0"/>
+  <arg name="search_x_max" default="17.0"/>
+  <arg name="common_max_theta_pi" default="0.3333333"/>
+  <arg name="common_min_theta_pi" default="0.0466667"/>
+  <arg name="boundary_theta_pi" default="0.2186667"/>
+  <!-- Ablation: enable only backend A* theta tracking; hard load anchors and
+       cable angle derivative penalties remain disabled below. -->
+  <arg name="configuration_tracking_weight" default="5000.0"/>
+  <arg name="cable_drone_collision_weight" default="300.0"/>
+  <arg name="load_ground_penalty_scale" default="10000.0"/>
+  <arg name="load_visual_scale" default="0.3076923077"/>
+  <arg name="drone_visual_scale" default="0.2771088070"/>
+  <!-- Ablation: disable all newly added cable angle derivative costs/bounds. -->
+  <arg name="cable_theta_rate_weight" default="0.0"/>
+  <arg name="cable_psi_rate_weight" default="0.0"/>
+  <arg name="cable_theta_acc_weight" default="0.0"/>
+  <arg name="cable_psi_acc_weight" default="0.0"/>
+  <arg name="max_cable_theta_rate" default="0.60"/>
+  <arg name="max_cable_psi_rate" default="0.80"/>
+  <arg name="max_cable_theta_acc" default="2.00"/>
+  <arg name="max_cable_psi_acc" default="3.00"/>
+  <arg name="cable_rate_limit_weight" default="0.0"/>
+  <arg name="cable_acc_limit_weight" default="0.0"/>
+  <arg name="reject_cable_kinematic_violation" default="false"/>
+  <arg name="optimize_terminal_psi" default="false"/>
+  <arg name="cable_kinematic_log_path" default="/tmp/marts_rect_corridor_cable_kinematics.csv"/>
+  <arg name="backend_integral_intervals" default="8"/>
+  <arg name="enable_clearance_hard_waypoints" default="false"/>
+  <arg name="hard_waypoint_clearance_threshold" default="0.8"/>
+  <arg name="hard_waypoint_log_path" default="/tmp/marts_hard_load_waypoints.csv"/>
+  <arg name="enable_drone_attitude_log" default="true"/>
+  <arg name="drone_attitude_log_path" default="/tmp/marts_rect_corridor_drone_attitude.csv"/>
+  <arg name="enable_rviz" default="true"/>
+  <arg name="astar_envelope_log_path" default="/tmp/marts_astar_envelope.csv"/>
+  <arg name="drone_collision_log_path" default="/tmp/marts_rect_corridor_drone_collision.csv"/>
+
+  <param name="/global_planning_node/EnableDroneCollisionLog" value="true"/>
+  <param name="/global_planning_node/DroneCollisionLogDt" value="0.05"/>
+  <param name="/global_planning_node/DroneCollisionLogPath" value="$(arg drone_collision_log_path)"/>
+  <param name="/astar_path_searcher/debug/enable_envelope_log" value="true"/>
+  <param name="/astar_path_searcher/debug/envelope_log_path" value="$(arg astar_envelope_log_path)"/>
+
+  <include file="$(find gcopter)/launch/Astar_planning_S.launch">
+    <arg name="map_id" value="11"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_z" value="3.0"/>
+    <arg name="search_x_min" value="$(arg search_x_min)"/>
+    <arg name="search_x_max" value="$(arg search_x_max)"/>
+    <arg name="weight_clearance" value="$(arg weight_clearance)"/>
+    <arg name="weight_smooth" value="$(arg weight_smooth)"/>
+    <arg name="safety_clearance" value="$(arg safety_clearance)"/>
+    <arg name="max_angle_step" value="$(arg max_angle_step)"/>
+    <arg name="check_transition" value="$(arg check_transition)"/>
+    <arg name="transition_position_step" value="$(arg transition_position_step)"/>
+    <arg name="transition_angle_step_deg" value="$(arg transition_angle_step_deg)"/>
+    <arg name="enable_load_corridor" value="$(arg enable_load_corridor)"/>
+    <arg name="enforce_system_clearance" value="$(arg enforce_system_clearance)"/>
+    <arg name="load_corridor_clearance" value="$(arg load_corridor_clearance)"/>
+    <arg name="load_corridor_max_segment_length" value="$(arg load_corridor_max_segment_length)"/>
+    <arg name="load_corridor_min_segment_length" value="$(arg load_corridor_min_segment_length)"/>
+    <arg name="load_corridor_longitudinal_overlap" value="$(arg load_corridor_longitudinal_overlap)"/>
+    <arg name="load_corridor_complexity_radius" value="$(arg load_corridor_complexity_radius)"/>
+    <arg name="load_corridor_clearance_weight" value="$(arg load_corridor_clearance_weight)"/>
+    <arg name="load_corridor_density_weight" value="$(arg load_corridor_density_weight)"/>
+    <arg name="load_corridor_min_extent" value="$(arg load_corridor_min_extent)"/>
+    <arg name="load_corridor_max_extent" value="$(arg load_corridor_max_extent)"/>
+    <arg name="load_corridor_extent_gain" value="$(arg load_corridor_extent_gain)"/>
+    <arg name="load_corridor_payload_radius" value="$(arg load_corridor_payload_radius)"/>
+    <arg name="load_corridor_cable_radius" value="$(arg load_corridor_cable_radius)"/>
+    <arg name="load_corridor_drone_radius" value="$(arg load_corridor_drone_radius)"/>
+    <arg name="load_corridor_bridge_safety_factor" value="$(arg load_corridor_bridge_safety_factor)"/>
+    <arg name="load_corridor_min_overlap_radius" value="$(arg load_corridor_min_overlap_radius)"/>
+    <arg name="load_corridor_ellipsoid_transverse_scale" value="$(arg load_corridor_ellipsoid_transverse_scale)"/>
+    <arg name="load_corridor_ellipsoid_max_longitudinal_radius" value="$(arg load_corridor_ellipsoid_max_longitudinal_radius)"/>
+    <arg name="use_load_corridor_backend" value="$(arg use_load_corridor_backend)"/>
+    <arg name="corridor_parameterization_scale" value="$(arg corridor_parameterization_scale)"/>
+    <arg name="corridor_temporal_groups" value="$(arg corridor_temporal_groups)"/>
+    <arg name="corridor_narrow_extent_threshold" value="$(arg corridor_narrow_extent_threshold)"/>
+    <arg name="corridor_narrow_margin_threshold" value="$(arg corridor_narrow_margin_threshold)"/>
+    <arg name="corridor_narrow_padding" value="$(arg corridor_narrow_padding)"/>
+    <arg name="corridor_terminal_guard_junctions" value="$(arg corridor_terminal_guard_junctions)"/>
+    <arg name="enable_corridor_path_smoothing" value="$(arg enable_corridor_path_smoothing)"/>
+    <arg name="corridor_smoothing_iterations" value="$(arg corridor_smoothing_iterations)"/>
+    <arg name="corridor_smoothing_position_gain" value="$(arg corridor_smoothing_position_gain)"/>
+    <arg name="corridor_smoothing_angle_gain" value="$(arg corridor_smoothing_angle_gain)"/>
+    <arg name="corridor_smoothing_max_deviation" value="$(arg corridor_smoothing_max_deviation)"/>
+    <arg name="corridor_smoothing_min_clearance" value="$(arg corridor_smoothing_min_clearance)"/>
+    <arg name="common_max_theta_pi" value="$(arg common_max_theta_pi)"/>
+    <arg name="common_min_theta_pi" value="$(arg common_min_theta_pi)"/>
+    <arg name="boundary_theta_pi" value="$(arg boundary_theta_pi)"/>
+    <arg name="configuration_tracking_weight" value="$(arg configuration_tracking_weight)"/>
+    <arg name="cable_drone_collision_weight" value="$(arg cable_drone_collision_weight)"/>
+    <arg name="load_ground_penalty_scale" value="$(arg load_ground_penalty_scale)"/>
+    <arg name="load_visual_scale" value="$(arg load_visual_scale)"/>
+    <arg name="drone_visual_scale" value="$(arg drone_visual_scale)"/>
+    <arg name="cable_theta_rate_weight" value="$(arg cable_theta_rate_weight)"/>
+    <arg name="cable_psi_rate_weight" value="$(arg cable_psi_rate_weight)"/>
+    <arg name="cable_theta_acc_weight" value="$(arg cable_theta_acc_weight)"/>
+    <arg name="cable_psi_acc_weight" value="$(arg cable_psi_acc_weight)"/>
+    <arg name="max_cable_theta_rate" value="$(arg max_cable_theta_rate)"/>
+    <arg name="max_cable_psi_rate" value="$(arg max_cable_psi_rate)"/>
+    <arg name="max_cable_theta_acc" value="$(arg max_cable_theta_acc)"/>
+    <arg name="max_cable_psi_acc" value="$(arg max_cable_psi_acc)"/>
+    <arg name="cable_rate_limit_weight" value="$(arg cable_rate_limit_weight)"/>
+    <arg name="cable_acc_limit_weight" value="$(arg cable_acc_limit_weight)"/>
+    <arg name="reject_cable_kinematic_violation" value="$(arg reject_cable_kinematic_violation)"/>
+    <arg name="optimize_terminal_psi" value="$(arg optimize_terminal_psi)"/>
+    <arg name="cable_kinematic_log_path" value="$(arg cable_kinematic_log_path)"/>
+    <arg name="backend_integral_intervals" value="$(arg backend_integral_intervals)"/>
+    <arg name="enable_clearance_hard_waypoints" value="$(arg enable_clearance_hard_waypoints)"/>
+    <arg name="hard_waypoint_clearance_threshold" value="$(arg hard_waypoint_clearance_threshold)"/>
+    <arg name="hard_waypoint_log_path" value="$(arg hard_waypoint_log_path)"/>
+    <arg name="enable_drone_attitude_log" value="$(arg enable_drone_attitude_log)"/>
+    <arg name="drone_attitude_log_path" value="$(arg drone_attitude_log_path)"/>
+    <arg name="enable_rviz" value="$(arg enable_rviz)"/>
+  </include>
+
+</launch>

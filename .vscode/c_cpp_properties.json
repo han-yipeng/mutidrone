@@ -1,0 +1,45 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/han/transport-multiple/devel/include/**",
+        "/home/han/fast_lio2_ws/devel/include/**",
+        "/home/han/livox_ws/devel/include/**",
+        "/home/han/realsense_ws/devel/include/**",
+        "/home/han/demo_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/usr/local/include/**",
+        "/home/han/demo_ws/src/A-LOAM/include/**",
+        "/home/han/demo_ws/src/ego_planner/bspline_opt/include/**",
+        "/home/han/demo_ws/src/VINS-Fusion/camera_models/include/**",
+        "/home/han/demo_ws/src/ego_planner/drone_detect/include/**",
+        "/home/han/demo_ws/src/ego_planner/plan_manage/include/**",
+        "/home/han/fast_lio2_ws/src/FAST_LIO/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/planner/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/path_searcher/include/**",
+        "/home/han/demo_ws/src/ego_planner/Utils/multi_map_server/include/**",
+        "/home/han/demo_ws/src/ego_planner/path_searching/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/plan_env/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/Utils/pose_utils/include/**",
+        "/home/han/demo_ws/src/px4_comtrol/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/px4ctrl/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/Utils/quadrotor_msgs/include/**",
+        "/home/han/realsense_ws/src/realsense-ros/realsense2_camera/include/**",
+        "/home/han/demo_ws/src/ego_planner/traj_utils/include/**",
+        "/home/han/transport-multiple/src/MARTS-Planner/Utils/uav_utils/include/**",
+        "/home/han/demo_ws/src/uavs_payload/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

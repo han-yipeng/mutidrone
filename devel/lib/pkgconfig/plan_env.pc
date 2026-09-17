@@ -1,0 +1,8 @@
+prefix=/home/han/transport-multiple/devel
+
+Name: plan_env
+Description: Description of plan_env
+Version: 0.0.0
+Cflags: -I/home/han/transport-multiple/src/MARTS-Planner/plan_env/include
+Libs: -L${prefix}/lib -lplan_env
+Requires: roscpp std_msgs

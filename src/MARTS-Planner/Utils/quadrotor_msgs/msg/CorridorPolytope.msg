@@ -1,0 +1,10 @@
+uint32 path_begin
+uint32 path_end
+geometry_msgs/Vector3[] normals
+float64[] offsets
+geometry_msgs/Point[] vertices
+bool clearance_bridge
+float64 complexity
+float64 local_extent
+float64 minimum_system_margin
+float64 maximum_system_margin

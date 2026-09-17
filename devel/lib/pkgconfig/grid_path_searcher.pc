@@ -1,0 +1,8 @@
+prefix=/home/han/transport-multiple/devel
+
+Name: grid_path_searcher
+Description: Description of grid_path_searcher
+Version: 0.0.1
+Cflags: -I/home/han/transport-multiple/src/MARTS-Planner/path_searcher/include
+Libs: -L${prefix}/lib 
+Requires: 
